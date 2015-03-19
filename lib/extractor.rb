@@ -13,6 +13,7 @@ class Extractor
     @added_content = []
     @final_para = nil
     @new_uuid = nil
+    @title_prefix = nil
     @debug = false
 
     total = get_total_count
@@ -142,6 +143,15 @@ class Extractor
       type_elem.value = "preview"
     end
 
+    unless @title_prefix.nil?
+      if @source_book.property_for("title").nil?
+        @source_book.add_property("title", @title_prefix)
+      else
+        title_elem = @source_book.properties.select{|p| p.key == "title"}.first
+        title_elem.value = @title_prefix + ' ' + title_elem.value
+      end
+    end
+
     unless @new_uuid.nil?
       if @source_book.property_for("bookid").nil?
         @source_book.add_property("bookid", @new_uuid)
@@ -178,6 +188,10 @@ class Extractor
 
   def set_book_identifier(identifier)
     @new_uuid = identifier
+  end
+
+  def set_title_prefix(prefix)
+    @title_prefix = prefix
   end
 
   def set_max_word(limit)
