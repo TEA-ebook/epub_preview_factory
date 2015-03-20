@@ -46,6 +46,7 @@ You can list all the available options for EPUB Preview Factory using the comman
      -v, [--verbose=VERBOSE]                      # verbose mode
      -c, [--max-char=MAX_CHAR]                    # calcul the size of the extract by char count instead of percent
      -m, [--move-finish-files=MOVE_FINISH_FILES]  # move finished file to the following directory
+     -t, [--title-prefix=TITLE_PREFIX]            # prefix title in preview
 
 EPUB Preview Factory has two main modes: single file or batch.
 
