@@ -148,7 +148,7 @@ class Extractor
         @source_book.add_property("title", @title_prefix)
       else
         title_elem = @source_book.properties.select{|p| p.key == "title"}.first
-        title_elem.value = @title_prefix + ' ' + title_elem.value
+        title_elem.value = "#{ @title_prefix } #{ title_elem.value }"
       end
     end
 
