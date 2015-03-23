@@ -16,7 +16,8 @@ class App < Thor
    method_option :verbose, :aliases => "-v", :desc => "verbose mode"
    method_option :max_char, :aliases => "-c", :desc => "calcul the size of the extract by char count instead of percent"
    method_option :move_finish_files, :aliases => "-m", :desc => "move finished file to the following directory"
-   method_option :title_prefix, :aliases => "-t", :desc => "prefix title in preview"
+   method_option :title_prefix, :desc => "prefix title in preview"
+   method_option :title_suffix, :desc => "suffix title in preview"
 
   def extract
     directory_mode = File.directory?(options[:source])
@@ -96,6 +97,9 @@ class App < Thor
       end
       if options[:title_prefix]
         extract.set_title_prefix(options[:title_prefix])
+      end
+      if options[:title_suffix]
+        extract.set_title_suffix(options[:title_suffix])
       end
       extract.get_extract(options[:destination])
       FileUtils.rm_rf(options[:destination].gsub('.epub', ''))
