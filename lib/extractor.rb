@@ -6,6 +6,8 @@ class Extractor
 
   SKIP_TAG = ["strong", "span", "body", "b", "em", "i"]
 
+  TITLE_TEMPLATE_FORMAT = '***title***'
+
   def initialize(filepath, pourcent_extract = 5)
     @source_file = Peregrin::Epub.read(filepath)
     @source_book = @source_file.to_book
@@ -143,12 +145,12 @@ class Extractor
       type_elem.value = "preview"
     end
 
-    unless @title_prefix.nil? and @title_suffix.nil?
+    unless @title_template.nil?
       if @source_book.property_for("title").nil?
-        @source_book.add_property("title", "#{ @title_prefix } #{ @title_suffix }".strip)
+        @source_book.add_property("title", @title_template.gsub(TITLE_TEMPLATE_FORMAT, ''))
       else
         title_elem = @source_book.properties.select{|p| p.key == "title"}.first
-        title_elem.value = "#{ @title_prefix } #{ title_elem.value } #{ @title_suffix }".strip
+        title_elem.value = @title_template.gsub(TITLE_TEMPLATE_FORMAT, title_elem.value)
       end
     end
 
@@ -190,12 +192,8 @@ class Extractor
     @new_uuid = identifier
   end
 
-  def set_title_prefix(prefix)
-    @title_prefix = prefix
-  end
-
-  def set_title_suffix(suffix)
-    @title_suffix = suffix
+  def set_title_template(template)
+    @title_template = template
   end
 
   def set_max_word(limit)
