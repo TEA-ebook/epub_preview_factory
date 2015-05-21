@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
 
   s.files         = ["lib/epub_preview_factory.rb", "lib/extractor.rb"]
   s.require_paths = ["lib"]
+  s.executables << 'epub_preview_factory'
 end
