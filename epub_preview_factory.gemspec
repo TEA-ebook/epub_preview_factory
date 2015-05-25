@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency "workers"#, "1.8.0"
   s.add_dependency "peregrin", "1.2.3"
 
-  s.files         = ["lib/epub_preview_factory.rb", "lib/extractor.rb"]
+  s.files         = Dir["bin/*"] + Dir["lib/**/*.rb"]
   s.require_paths = ["lib"]
+  s.executables   = ["epub_preview_factory"]
 end
