@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+require 'bundler/setup'
+
+begin
+  require 'epub_preview_factory'
+rescue LoadError
+  require 'rubygems'
+  require 'epub_preview_factory'
+end
