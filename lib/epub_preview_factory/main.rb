@@ -1,9 +1,8 @@
-#!/usr/bin/env ruby
-require "rubygems" # ruby1.9 doesn't "require" it though
-require "thor"
 require 'fileutils'
 require 'workers'
-require './lib/extractor.rb'
+require 'thor'
+
+require 'epub_preview_factory/extractor'
 
 class App < Thor
 

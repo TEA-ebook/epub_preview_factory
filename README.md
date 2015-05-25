@@ -32,10 +32,10 @@ EPUB Preview Factory is based on a fork of [Peregrin](https://github.com/joseph/
 
 You can list all the available options for EPUB Preview Factory using the command-line:
 
-    $ bundle exec ruby main.rb
+    $ bundle exec ruby -Ilib lib/epub_preview_factory.rb
     
     Usage:
-     main.rb extract -d, --destination=DESTINATION -s, --source=SOURCE
+     epub_preview_factory.rb extract -d, --destination=DESTINATION -s, --source=SOURCE
     
     Options:
      -s, --source=SOURCE                          # Source file or directory
@@ -55,6 +55,9 @@ In single file mode (-s pointing to an EPUB), you just need to specify two optio
     $ bundle exec ruby main.rb extract -s test.epub -d test_preview.epub
 
 In batch mode (-s pointing to a directory), you can specify the number of workers (default option is 5 workers) that you'd like to use to process books faster using the -w option.
+
+The gem can be used in other projects using the bin/epub_preview_factory file.
+
 
 ## Upcoming features
 
