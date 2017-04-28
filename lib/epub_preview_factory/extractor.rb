@@ -52,13 +52,16 @@ class Extractor
   end
 
   def get_extract(filepath)
-
     component_remove = []
 
     count_length = 0
     stop_component = false
     stop_node = nil
     @source_book.components.each do |c|
+
+      if !c.attributes[:guide_type].nil? && c.attributes[:guide_type] == "toc"
+        component_remove << c
+      end
 
       if stop_component == true
         component_remove << c
@@ -103,6 +106,23 @@ class Extractor
 
       c.contents = doc.to_html
     end
+
+    # clean nav from epub3
+    nav = nil
+    @source_book.blueprints.each do |b|
+      if b.rel == :nav
+        nav = b.src
+      end
+    end
+    if nav
+      @source_book.components.each do |c|
+        if c.src == nav
+          component_remove << c
+        end
+      end
+    end
+    @source_book.blueprints.delete_if{|b| b.rel == :nav}
+    @source_book.resources.delete_if{|r| r.attributes[:id] == "toc"}
 
     @source_book.components.delete_if{|c| component_remove.include?(c)}
     clean_chapters(component_remove)
@@ -176,6 +196,10 @@ class Extractor
     #   puts p.inspect
     # end
 
+    # @source_book.components.each do |p|
+    #   puts p.attributes.inspect
+    # end
+
     epub = Peregrin::Epub.new(@source_book)
     epub.write(filepath)
   end
@@ -206,11 +230,7 @@ class Extractor
 
   def component_have_id?(component, id)
     doc = Nokogiri::HTML.parse(component.contents)
-    find_id = doc.at_css("##{id}")
-    if !find_id.nil?
-      return true
-    end
-    return false
+    !!doc.at_xpath("//*[@id='#{id}']")
   end
 
   def find_chapter_from_components(component, chapters)
@@ -250,14 +270,13 @@ class Extractor
     end
     search_chaps.map! do |c|
       change_chapter = false
-      if component_remove.map(&:src).include?(c.src.split('#').first)
+      if component_remove.map(&:src).any?{|src| src.match(c.src.split('#').first)}
         change_chapter = true
       end
 
       if c.src.split('#').size > 1 && change_chapter == false
         @source_book.components.each do |comp|
-          if c.src.split('#').first == comp.src && !component_have_id?(comp, c.src.split('#')[1])
-            #puts "test #{comp.src} with #{c.src.split('#').last}"
+          if comp.src.match(c.src.split('#').first) && !component_have_id?(comp, c.src.split('#')[1])
             change_chapter = true
           end
         end
@@ -265,6 +284,16 @@ class Extractor
 
       if change_chapter == true
         c.src = @last_comp.src.split('#').first + "#last_elem_preview"
+      else
+        @source_book.components.each do |comp|
+          if comp.src.match(c.src.split('#').first)
+            if c.src.split('#').size > 1
+              c.src = comp.src + '#' + c.src.split('#').last
+            else
+              c.src = comp.src
+            end
+          end
+        end
       end
 
       if @chapters[c.src]

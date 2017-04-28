@@ -1,6 +1,7 @@
 GIT
   remote: git://github.com/Feedbooks/peregrin.git
-  revision: 96bcc81fc2008dea2e5cc97206760dc5213e078c
+  revision: b9009f5a528480f50eb2e3eff9afcb5f5ed78c75
+  branch: master
   specs:
     peregrin (1.2.3)
       mime-types
@@ -12,11 +13,13 @@ GEM
   specs:
     macaddr (1.6.1)
       systemu (~> 2.5.0)
-    mime-types (2.1)
+    mime-types (3.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2016.0521)
     mini_portile (0.5.2)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
-    rubyzip (1.1.0)
+    rubyzip (1.2.1)
     systemu (2.5.2)
     thor (0.18.1)
     uuid (2.3.7)
