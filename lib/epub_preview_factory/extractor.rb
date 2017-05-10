@@ -4,7 +4,7 @@ require 'peregrin'
 class Extractor
   attr_accessor :pourcent_extract
 
-  SKIP_TAG = ["strong", "span", "body", "b", "em", "i"]
+  SKIP_TAG = ['strong', 'span', 'body', 'b', 'em', 'i']
 
   TITLE_TEMPLATE_FORMAT = '***title***'
 
@@ -43,11 +43,11 @@ class Extractor
     count_length = 0
     doc.at_css('body').traverse do |t|
       unless t.text.nil?
-        next if  SKIP_TAG.include?(t.name)
+        next if SKIP_TAG.include?(t.name)
         text = t.text.gsub("\r\n", "").gsub("\n", "").strip
         count_length += text.size
-        end
       end
+    end
     return count_length
   end
 
@@ -95,14 +95,14 @@ class Extractor
         end
       end
 
-    if stop_component == true
-      if @final_para.nil?
-        stop_node.set_attribute('id', 'last_elem_preview')
-      else
-        body = doc.at_css("body")
-        body.add_child(@final_para)
+      if stop_component == true
+        if @final_para.nil?
+          stop_node.set_attribute('id', 'last_elem_preview')
+        else
+          body = doc.at_css("body")
+          body.add_child(@final_para)
+        end
       end
-    end
 
       c.contents = doc.to_html
     end
@@ -121,15 +121,15 @@ class Extractor
         end
       end
     end
-    @source_book.blueprints.delete_if{|b| b.rel == :nav}
-    @source_book.resources.delete_if{|r| r.attributes[:id] == "toc"}
+    @source_book.blueprints.delete_if {|b| b.rel == :nav}
+    @source_book.resources.delete_if {|r| r.attributes[:id] == "toc"}
 
-    @source_book.components.delete_if{|c| component_remove.include?(c)}
+    @source_book.components.delete_if {|c| component_remove.include?(c)}
     clean_chapters(component_remove)
     clean_link(component_remove)
 
     @added_content.each do |c|
-    	@source_book.add_component(c[0], c[1], c[2])
+      @source_book.add_component(c[0], c[1], c[2])
     end
 
 
@@ -161,7 +161,7 @@ class Extractor
     if @source_book.property_for("type").nil?
       @source_book.add_property("type", "preview")
     else
-      type_elem = @source_book.properties.select{|p| p.key == "type"}.first
+      type_elem = @source_book.properties.select {|p| p.key == "type"}.first
       type_elem.value = "preview"
     end
 
@@ -169,7 +169,7 @@ class Extractor
       if @source_book.property_for("title").nil?
         @source_book.add_property("title", @title_template.gsub(TITLE_TEMPLATE_FORMAT, ''))
       else
-        title_elem = @source_book.properties.select{|p| p.key == "title"}.first
+        title_elem = @source_book.properties.select {|p| p.key == "title"}.first
         title_elem.value = @title_template.gsub(TITLE_TEMPLATE_FORMAT, title_elem.value)
       end
     end
@@ -178,7 +178,7 @@ class Extractor
       if @source_book.property_for("bookid").nil?
         @source_book.add_property("bookid", @new_uuid)
       else
-        type_elem = @source_book.properties.select{|p| p.key == "bookid"}.first
+        type_elem = @source_book.properties.select {|p| p.key == "bookid"}.first
         type_elem.value = @new_uuid
       end
     end
@@ -186,7 +186,7 @@ class Extractor
     if @source_book.property_for("source").nil?
       @source_book.add_property("source", @source_book.property_for('identifier'))
     else
-      type_elem = @source_book.properties.select{|p| p.key == "source"}.first
+      type_elem = @source_book.properties.select {|p| p.key == "source"}.first
       type_elem.value = @source_book.property_for('identifier')
     end
 
@@ -209,7 +209,7 @@ class Extractor
   end
 
   def add_final_page(name, content, media_type = "application/xhtml+xml")
-  	@added_content << [name, content, media_type]
+    @added_content << [name, content, media_type]
   end
 
   def set_book_identifier(identifier)
@@ -270,7 +270,7 @@ class Extractor
     end
     search_chaps.map! do |c|
       change_chapter = false
-      if component_remove.map(&:src).any?{|src| src.match(c.src.split('#').first)}
+      if component_remove.map(&:src).any? {|src| src.match(c.src.split('#').first)}
         change_chapter = true
       end
 

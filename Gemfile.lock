@@ -1,6 +1,6 @@
 GIT
-  remote: git://github.com/Feedbooks/peregrin.git
-  revision: b9009f5a528480f50eb2e3eff9afcb5f5ed78c75
+  remote: git://github.com/TEA-ebook/peregrin.git
+  revision: 364d818ce3167b7b62cc13e14887f54bfd0889bb
   branch: master
   specs:
     peregrin (1.2.3)
